@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Products Table with Pagination & Dropdown</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 40px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    /* Container for table and controls */
+    .table-container {
+      width: 90%;
+      max-width: 900px;
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow:
+        0 8px 15px rgba(0,0,0,0.1),
+        inset 0 0 10px rgba(255,255,255,0.5),
+        0 3px 6px rgba(0,0,0,0.1);
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+
+    table {
+      border-collapse: separate;
+      border-spacing: 0;
+      width: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow:
+        0 4px 10px rgba(0,0,0,0.12),
+        inset 0 -3px 8px rgba(255,255,255,0.8);
+      transform: translateZ(15px);
+    }
+
+    th, td {
+      padding: 14px 20px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+      background-color: #fafafa;
+    }
+
+    th {
+      background: linear-gradient(135deg, #0056b3, #007bff);
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+      user-select: none;
+    }
+
+    tbody tr:hover td {
+      background-color: #e0eaff;
+      cursor: default;
+    }
+
+    .pagination {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .pagination button {
+      margin: 0 5px;
+      padding: 8px 14px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+      transition: background-color 0.3s ease;
+      font-size: 15px;
+    }
+
+    .pagination button.active {
+      background-color: #004a99;
+      box-shadow: 0 0 10px #004a99;
+    }
+
+    .pagination button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* Dropdown styling */
+    .controls {
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      font-size: 16px;
+      user-select: none;
+    }
+
+    .controls label {
+      font-weight: 600;
+      color: #333;
+    }
+
+    select {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1.5px solid #007bff;
+      outline-color: #007bff;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,123,255,0.4);
+      transition: box-shadow 0.3s ease;
+    }
+
+    select:hover, select:focus {
+      box-shadow: 0 4px 10px rgba(0,123,255,0.7);
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Product Inventory</h2>
+
+  <div class="table-container">
+    <div class="controls">
+      <label for="rowsPerPage">Products per page:</label>
+      <select id="rowsPerPage" aria-label="Select number of products per page">
+        <option value="5">5</option>
+        <option value="10" selected>10</option>
+        <option value="20">20</option>
+      </select>
+    </div>
+
+    <table id="productTable" aria-describedby="productTableDesc" role="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Product</th>
+          <th>Category</th>
+          <th>Price ($)</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="pagination" id="pagination" role="navigation" aria-label="Pagination"></div>
+  </div>
+
+  <script>
+    const products = [
+      { id: 1, name: "Apple iPhone 14", category: "Electronics", price: 799 },
+      { id: 2, name: "Samsung Galaxy S23", category: "Electronics", price: 749 },
+      { id: 3, name: "Sony WH-1000XM5", category: "Audio", price: 399 },
+      { id: 4, name: "Dell XPS 13 Laptop", category: "Computers", price: 999 },
+      { id: 5, name: "Logitech MX Master 3", category: "Accessories", price: 99 },
+      { id: 6, name: "Apple MacBook Air M2", category: "Computers", price: 1199 },
+      { id: 7, name: "Amazon Echo Dot", category: "Smart Home", price: 49 },
+      { id: 8, name: "HP Envy 6055e Printer", category: "Office", price: 129 },
+      { id: 9, name: "Nintendo Switch OLED", category: "Gaming", price: 349 },
+      { id: 10, name: "Bose QuietComfort 45", category: "Audio", price: 329 },
+      { id: 11, name: "Google Pixel 8", category: "Electronics", price: 699 },
+      { id: 12, name: "Apple Watch Series 9", category: "Wearables", price: 399 },
+      { id: 13, name: "Samsung Galaxy Tab S9", category: "Tablets", price: 649 },
+      { id: 14, name: "Asus ROG Gaming Laptop", category: "Computers", price: 1499 },
+      { id: 15, name: "Canon EOS Rebel T8i", category: "Cameras", price: 899 },
+      { id: 16, name: "Fitbit Charge 6", category: "Wearables", price: 149 },
+      { id: 17, name: "Sony PlayStation 5", category: "Gaming", price: 499 },
+      { id: 18, name: "JBL Flip 6 Speaker", category: "Audio", price: 129 },
+      { id: 19, name: "Roku Streaming Stick 4K", category: "TV & Video", price: 49 },
+      { id: 20, name: "Apple AirPods Pro 2", category: "Audio", price: 249 },
+      { id: 21, name: "Lenovo IdeaPad 3", category: "Computers", price: 599 },
+      { id: 22, name: "Garmin Forerunner 255", category: "Wearables", price: 349 },
+      { id: 23, name: "Kindle Paperwhite", category: "Tablets", price: 139 },
+      { id: 24, name: "GoPro HERO11 Black", category: "Cameras", price: 449 },
+      { id: 25, name: "Microsoft Surface Pro 9", category: "Computers", price: 1099 },
+      { id: 26, name: "Samsung Smart Monitor M8", category: "Monitors", price: 699 },
+      { id: 27, name: "Corsair K95 RGB Keyboard", category: "Accessories", price: 199 },
+      { id: 28, name: "TP-Link Archer AX50", category: "Networking", price: 149 },
+      { id: 29, name: "Ring Video Doorbell 4", category: "Smart Home", price: 179 },
+      { id: 30, name: "Anker PowerCore 10000", category: "Accessories", price: 49 },
+      { id: 31, name: "Bose Smart Soundbar 600", category: "Audio", price: 499 },
+      { id: 32, name: "Nikon Z50 Mirrorless Camera", category: "Cameras", price: 999 },
+      { id: 33, name: "WD 2TB External Drive", category: "Storage", price: 89 },
+      { id: 34, name: "Apple Magic Keyboard", category: "Accessories", price: 99 },
+      { id: 35, name: "Acer Predator Monitor", category: "Monitors", price: 399 },
+      { id: 36, name: "Samsung Galaxy Watch 6", category: "Wearables", price: 399 },
+      { id: 37, name: "Belkin 3-in-1 Charger", category: "Accessories", price: 149 },
+      { id: 38, name: "Echo Show 10", category: "Smart Home", price: 249 },
+      { id: 39, name: "TP-Link Smart Plug", category: "Smart Home", price: 19 },
+      { id: 40, name: "SanDisk 128GB microSD", category: "Storage", price: 24 },
+      { id: 41, name: "Alienware Aurora R16", category: "Computers", price: 1599 },
+      { id: 42, name: "HyperX Cloud II Headset", category: "Audio", price: 99 },
+      { id: 43, name: "LG C3 OLED TV 55\"", category: "TV & Video", price: 1499 },
+      { id: 44, name: "Apple TV 4K", category: "TV & Video", price: 129 },
+      { id: 45, name: "MSI Gaming Mouse", category: "Accessories", price: 49 },
+      { id: 46, name: "Google Nest Thermostat", category: "Smart Home", price: 129 },
+      { id: 47, name: "Razer Blade 15", category: "Computers", price: 1799 },
+      { id: 48, name: "Sony ZV-E10 Camera", category: "Cameras", price: 699 },
+      { id: 49, name: "Netgear Nighthawk AX8", category: "Networking", price: 299 },
+      { id: 50, name: "SteelSeries Apex Pro", category: "Accessories", price: 189 }
+    ];
+
+    let rowsPerPage = 10;
+    let currentPage = 1;
+
+    const tbody = document.querySelector("#productTable tbody");
+    const pagination = document.getElementById("pagination");
+    const rowsSelect = document.getElementById("rowsPerPage");
+
+    function renderTable(page) {
+      tbody.innerHTML = "";
+      const start = (page - 1) * rowsPerPage;
+      const end = start + rowsPerPage;
+      const pageItems = products.slice(start, end);
+
+      for (const p of pageItems) {
+        tbody.innerHTML += `
+          <tr>
+            <td>${p.id}</td>
+            <td>${p.name}</td>
+            <td>${p.category}</td>
+            <td>${p.price.toFixed(2)}</td>
+          </tr>`;
+      }
+    }
+
+    function renderPagination() {
+      pagination.innerHTML = "";
+      const totalPages = Math.ceil(products.length / rowsPerPage);
+
+      for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement("button");
+        btn.textContent = i;
+        if (i === currentPage) btn.classList.add("active");
+        btn.onclick = () => {
+          currentPage = i;
+          renderTable(currentPage);
+          renderPagination();
+          window.scrollTo({top: 0, behavior: "smooth"});
+        };
+        pagination.appendChild(btn);
+      }
+    }
+
+    rowsSelect.addEventListener("change", () => {
+      rowsPerPage = parseInt(rowsSelect.value);
+      currentPage = 1;
+      renderTable(currentPage);
+      renderPagination();
+    });
+
+    // Initial render
+    renderTable(currentPage);
+    renderPagination();
+  </script>
+
+</body>
+</html>

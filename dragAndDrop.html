@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Puzzle Drag and Drop</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .puzzle-container {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .puzzle-piece {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, #ff9a9e 10%, #fad0c4 100%);
+      border-radius: 10px;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      color: white;
+      cursor: grab;
+      text-align: center;
+    }
+
+    .puzzle-slot {
+      width: 100px;
+      height: 100px;
+      border: 2px dashed #ddd;
+      border-radius: 10px;
+      background-color: #ffffff;
+      box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+
+    .puzzle-piece:active {
+      cursor: grabbing;
+      box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .puzzle-slot.over {
+      border-color: #66ff99;
+      background-color: #f0f8ff;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    /* Celebration animation */
+    .celebrate {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 3rem;
+      font-weight: bold;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .celebrate.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div>
+    <h1>Drag and Drop In Order</h1>
+
+    <div class="puzzle-container">
+      <div class="puzzle-piece" id="piece1" draggable="true">1</div>
+      <div class="puzzle-piece" id="piece2" draggable="true">2</div>
+      <div class="puzzle-piece" id="piece3" draggable="true">3</div>
+    </div>
+
+    <div class="puzzle-container">
+      <div class="puzzle-slot" id="slot1"></div>
+      <div class="puzzle-slot" id="slot2"></div>
+      <div class="puzzle-slot" id="slot3"></div>
+    </div>
+  </div>
+
+  <div class="celebrate" id="celebrate">Congratulations!</div>
+
+  <script>
+    const pieces = document.querySelectorAll('.puzzle-piece');
+    const slots = document.querySelectorAll('.puzzle-slot');
+    const celebrateDiv = document.getElementById('celebrate');
+
+    let draggedPiece = null;
+
+    pieces.forEach(piece => {
+      piece.addEventListener('dragstart', () => {
+        draggedPiece = piece;
+      });
+
+      piece.addEventListener('dragend', () => {
+        draggedPiece = null;
+        checkPuzzle();
+      });
+    });
+
+    slots.forEach(slot => {
+      slot.addEventListener('dragover', e => {
+        e.preventDefault();
+        slot.classList.add('over');
+      });
+
+      slot.addEventListener('dragleave', () => {
+        slot.classList.remove('over');
+      });
+
+      slot.addEventListener('drop', () => {
+        slot.classList.remove('over');
+        if (!slot.hasChildNodes()) {
+          slot.appendChild(draggedPiece);
+        }
+      });
+    });
+
+    function checkPuzzle() {
+      let allCorrect = true;
+      slots.forEach(slot => {
+        if (slot.childNodes.length === 0 || !slot.childNodes[0].id.endsWith(slot.id.replace('slot', ''))) {
+          allCorrect = false;
+        }
+      });
+
+      if (allCorrect) {
+        celebrate();
+      }
+    }
+
+    function celebrate() {
+      celebrateDiv.classList.add('show');
+      setTimeout(() => {
+        celebrateDiv.classList.remove('show');
+      }, 3000);
+    }
+  </script>
+
+</body>
+</html>

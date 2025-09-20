@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input and Delete Button with 3D Effect</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 300px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0px 4px 0px #888;
+        }
+
+        button:active {
+            box-shadow: 0px 2px 0px #666;
+            transform: translateY(2px);
+        }
+
+        #enterButton {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #deleteButton {
+            background-color: #f44336;
+            color: white;
+        }
+
+        #displayText {
+            margin-top: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        #errorMessage {
+            margin-top: 5px;
+            color: red;
+            font-size: 18px;
+        }
+
+        #deletedMessage {
+            margin-top: 5px;
+            color: green;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <input type="text" id="inputText" placeholder="Enter text here">
+        <br>
+        <button id="enterButton">Enter</button>
+        <button id="deleteButton">Delete</button>
+
+        <div id="displayText"></div>
+        <div id="deletedMessage"></div>
+        <div id="errorMessage"></div>
+    </div>
+
+    <script>
+        const enterButton = document.getElementById('enterButton');
+        const deleteButton = document.getElementById('deleteButton');
+        const displayText = document.getElementById('displayText');
+        const inputText = document.getElementById('inputText');
+        const errorMessage = document.getElementById('errorMessage');
+        const deletedMessage = document.getElementById('deletedMessage');
+
+        let deleted = false;  // Flag to track whether all characters are deleted
+
+        // Display the entered text when "Enter" is clicked
+        enterButton.addEventListener('click', () => {
+            displayText.textContent = inputText.value;
+            errorMessage.textContent = "";  // Clear any previous error messages
+            deletedMessage.textContent = ""; // Clear previous "Deleted" message
+            deleted = false;  // Reset the deleted flag
+        });
+
+        // Delete one character at a time when "Delete" is clicked
+        deleteButton.addEventListener('click', () => {
+            if (displayText.textContent.length > 1) {
+                displayText.textContent = displayText.textContent.slice(0, -1);
+                errorMessage.textContent = "";  // Clear error if there was one
+                deletedMessage.textContent = ""; // Clear previous "Deleted" message
+            } else if (displayText.textContent.length === 1) {
+                displayText.textContent = "";  // Delete the last character
+                deletedMessage.textContent = "Deleted";  // Show "Deleted" message
+                errorMessage.textContent = "";  // Clear error
+                deleted = true;  // Set the flag to indicate all characters are deleted
+            } else {
+                errorMessage.textContent = "Error: No more characters to delete!";
+                deletedMessage.textContent = "";  // Remove "Deleted" message when error occurs
+            }
+        });
+    </script>
+
+</body>
+</html>

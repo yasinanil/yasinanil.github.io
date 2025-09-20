@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookies Accept</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            /* Dikey hizalama */
+            align-items: center;
+            /* Yatayda ortalama */
+            height: 100vh;
+            /* Sayfanın yüksekliği */
+            position: relative;
+            /* Çerez banner'ı için */
+        }
+
+        .cookies-banner {
+            position: absolute;
+            /* Alt kısımda kalmasını sağla */
+            bottom: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .cookies-banner button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .delayed-button {
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 20px;
+            width: 80px;
+            cursor: not-allowed;
+            text-decoration: none;
+        }
+
+        h3 {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>Button will be displayed soon.</h3>
+    <div class="button-container" style="text-align: center;">
+        <a id="delayedButton" href="downloadUpload.html" class="delayed-button" style="display: none;">Go to Files</a>
+    </div>
+
+    <div class="cookies-banner" id="cookiesBanner">
+        <p>This website uses cookies to ensure you get the best experience. By using this website, you agree to our <a
+                href="#" style="color:lightblue;">Privacy Policy</a>.</p>
+        <button id="acceptCookiesButton">Accept Cookies</button>
+    </div>
+
+    <script>
+        // Function to set cookies
+        function setCookie(name, value, days) {
+            let expires = "";
+            if (days) {
+                let date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+
+        // Set realistic cookies when the page loads
+        window.onload = function () {
+            setCookie("sessionToken", "abc123xyz456", 7);
+            setCookie("userPreferences", "darkMode=true&fontSize=medium", 7);
+            setCookie("trackingId", "TID123456789", 7);
+            setCookie("cartItems", "3", 7);
+            setCookie("language", "en-US", 7);
+            setCookie("lastVisitedPage", "homepage", 7);
+            setCookie("newsletterSubscribed", "true", 7);
+            setCookie("authToken", "qwerty09876", 7);
+            setCookie("location", "USA", 7);
+            setCookie("adPreferences", "personalized=true", 7);
+
+            const cookiesButton = document.getElementById('acceptCookiesButton');
+            const delayedButton = document.getElementById('delayedButton');
+            const banner = document.getElementById('cookiesBanner');
+
+            // Randomly show an alert sometimes (50% chance)
+            if (Math.random() < 0.5) {
+                alert("Welcome to the page!");
+            }
+
+            // Accept Cookies button click event
+            cookiesButton.onclick = function () {
+                banner.style.display = 'none';
+
+                // Generate a random delay between 4 and 8 seconds
+                const randomDelay = Math.floor(Math.random() * 3000) + 10000;
+                console.log(randomDelay);
+
+                // Start random timer after cookies are accepted
+                setTimeout(function () {
+                    delayedButton.style.display = 'block';
+                    delayedButton.style.cursor = 'pointer'; // Change cursor to pointer
+                }, randomDelay);
+            };
+        };
+    </script>
+</body>
+
+</html>

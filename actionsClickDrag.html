@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actions Class Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            display: flex;
+            align-items: flex-start;
+            /* Align items to the start of the container */
+            gap: 20px;
+            /* Space between items */
+        }
+
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            line-height: 100px;
+            border-radius: 8px;
+            cursor: grab;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .drop-zone {
+            width: 150px;
+            height: 150px;
+            border: 2px dashed #4CAF50;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f0f0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .message {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #4CAF50;
+            display: none;
+            /* Hidden by default */
+        }
+
+        .action-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-button:hover {
+            background-color: #45a049;
+        }
+
+        .hover-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #45a049;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        .hover-button:hover {
+            background-color: #e67e22;
+        }
+
+        .info {
+            font-size: x-large;
+            margin: 100px;
+            padding: 15px;
+            background-color: beige;
+            border: 3px solid #651414;
+            border-radius: 25px;
+            display: none;
+            /* Hidden by default */
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Drag and Drop</h1>
+    <div class="container">
+        <div>
+            <div id="drag1" class="box" draggable="true">Drag me</div>
+        </div>
+        <div>
+            <div id="drop1" class="drop-zone">Drop here</div>
+        </div>
+    </div>
+    <div id="dragSuccessMessage" class="message">Item successfully dropped!</div>
+    <h1>Right Click</h1>
+    <div>
+        <button id="showSuccessButton" class="action-button">Right-click me</button>
+        <div id="rightClickSuccessMessage" class="message">Button right-clicked!</div>
+    </div>
+    <h1>Double Click</h1>
+    <div>
+        <button id="doubleClickButton" class="action-button">Double-click me</button>
+        <div id="doubleClickSuccessMessage" class="message">Button double-clicked!</div>
+    </div>
+    <h1>Hover Over Button</h1>
+    <div>
+        <button id="hoverButton" class="hover-button">Hover over me</button>
+        <div id="hoverSuccessMessage" class="message">Button hovered!</div>
+    </div>
+
+
+    <!-- Description of Selenium's Actions Class -->
+    <div id="info" class="info">
+        <h2>Selenium's Actions Class</h2>
+        <p>The Selenium WebDriver <code>Actions</code> class is used to perform complex user interactions such as mouse
+            movements, key presses, and drag-and-drop operations. It allows you to simulate various actions on web
+            elements that cannot be achieved with simple click or send keys methods. Some common methods of the
+            <code>Actions</code> class include <code>moveToElement()</code>, <code>clickAndHold()</code>,
+            <code>release()</code>, and <code>dragAndDrop()</code>. These methods enable more advanced and realistic
+            automation scenarios, mimicking real user behavior.
+        </p>
+    </div>
+
+    <script>
+        // Get the draggable element, drop zone, success messages, and buttons
+        const dragElement = document.getElementById('drag1');
+        const dropZone = document.getElementById('drop1');
+        const dragSuccessMessage = document.getElementById('dragSuccessMessage');
+        const rightClickSuccessMessage = document.getElementById('rightClickSuccessMessage');
+        const doubleClickButton = document.getElementById('doubleClickButton');
+        const doubleClickSuccessMessage = document.getElementById('doubleClickSuccessMessage');
+        const showSuccessButton = document.getElementById('showSuccessButton');
+        const info = document.getElementById('info');
+
+        // Flags to check completion of actions
+        let dragCompleted = false;
+        let rightClickCompleted = false;
+        let doubleClickCompleted = false;
+        let hoverCompleted = false;
+
+        // Add event listeners for drag events
+        dragElement.addEventListener('dragstart', (event) => {
+            event.dataTransfer.setData('text/plain', event.target.id);
+        });
+
+        dropZone.addEventListener('dragover', (event) => {
+            event.preventDefault(); // Necessary to allow dropping
+        });
+
+        dropZone.addEventListener('drop', (event) => {
+            event.preventDefault();
+            const data = event.dataTransfer.getData('text/plain');
+            const draggedElement = document.getElementById(data);
+
+            // Append the dragged element to the drop zone
+            dropZone.appendChild(draggedElement);
+            draggedElement.style.cursor = 'default';
+
+            // Display the drag success message
+            dragSuccessMessage.style.display = 'block';
+            dragCompleted = true;
+            checkAllActionsCompleted();
+        });
+
+        // Add event listener for the right-click event on the button
+        showSuccessButton.addEventListener('contextmenu', (event) => {
+            event.preventDefault(); // Prevent the default context menu
+            // Display the right-click success message
+            rightClickSuccessMessage.style.display = 'block';
+            rightClickCompleted = true;
+            checkAllActionsCompleted();
+        });
+
+        // Add event listener for the double-click event on the button
+        doubleClickButton.addEventListener('dblclick', () => {
+            // Display the double-click success message
+            doubleClickSuccessMessage.style.display = 'block';
+            doubleClickCompleted = true;
+            checkAllActionsCompleted();
+        });
+
+        const hoverButton = document.getElementById('hoverButton');
+        const hoverSuccessMessage = document.getElementById('hoverSuccessMessage');
+
+        hoverButton.addEventListener('mouseenter', () => {
+            hoverSuccessMessage.style.display = 'block';
+            hoverCompleted = true;
+            checkAllActionsCompleted();
+        });
+
+
+        // Function to check if all actions are completed
+        function checkAllActionsCompleted() {
+            if (dragCompleted && rightClickCompleted && doubleClickCompleted && hoverCompleted) {
+                info.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebDriverWait Example - 3D Button</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+        }
+        #elementID {
+            display: none;
+            padding: 15px 30px;
+            background-color: #ff7f50;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 6px #d35400;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        #elementID:hover {
+            background-color: #ff6347;
+        }
+        #elementID:active {
+            box-shadow: 0 3px #d35400;
+            transform: translateY(3px);
+        }
+        #successMessage {
+            display: none;
+            margin-top: 20px;
+            font-size: 18px;
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        function showElement() {
+            setTimeout(function() {
+                document.getElementById("elementID").style.display = "inline-block";
+            }, 5000); // Button will appear after 5 seconds
+        }
+
+        function showSuccessMessage() {
+            document.getElementById("successMessage").style.display = "block";
+        }
+    </script>
+</head>
+<body onload="showElement()">
+    <div class="container">
+        <h1>Testing WebDriverWait with Selenium</h1>
+        <p>The button below will appear after 5 seconds:</p>
+        
+        <button id="elementID" onclick="showSuccessMessage()">
+            Click Me!
+        </button>
+        
+        <div id="successMessage">
+            Success! You clicked the button.
+        </div>
+    </div>
+</body>
+</html>

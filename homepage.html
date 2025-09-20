@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Homepage</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #89f7fe, #66a6ff);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px; /* 3D perspective */
+        }
+
+        .container {
+            text-align: center;
+            transform: rotateX(30deg) rotateY(15deg); /* 3D rotation */
+            transform-style: preserve-3d;
+            transition: transform 1s;
+        }
+
+        .container:hover {
+            transform: rotateX(0deg) rotateY(0deg); /* Straightens on hover */
+        }
+
+        h1 {
+            color: white;
+            font-size: 50px;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .user-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            z-index: 1; /* Ensures the icon is above other elements */
+        }
+
+        .user-icon:hover {
+            transform: scale(1.2); /* Enlarges on hover */
+        }
+
+        .user-icon i {
+            font-size: 24px; /* Adjust icon size */
+            color: #ffffff; /* Icon color */
+        }
+
+        /* Hover Menu */
+        .menu {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background-color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            padding: 10px;
+            text-align: right;
+            z-index: 2; /* Ensures the menu is above other elements */
+            visibility: hidden;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: visibility 0.2s, opacity 0.2s, transform 0.2s;
+        }
+
+        .user-icon:hover .menu,
+        .menu.show {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .menu a {
+            display: block;
+            padding: 10px;
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .menu a:hover {
+            background-color: #66a6ff;
+            color: white;
+        }
+    </style>
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Main Content with 3D Effects -->
+    <div class="container">
+        <h1>Welcome to the 3D Homepage</h1>
+        <p style="color:white; font-size: 18px;">This is an interactive homepage with 3D effects. Hover over the user icon to explore more.</p>
+    </div>
+
+    <!-- User Icon with Hover Links -->
+    <div class="user-icon" id="userIcon">
+        <i class="fa-regular fa-user"></i>
+        <!-- Dropdown Menu -->
+        <div class="menu" id="menu">
+            <a href="form.html">Register</a>
+            <a href="login.html">Sign In</a>
+        </div>
+    </div>
+
+    <!-- JavaScript for Toggle Menu -->
+    <script>
+        document.getElementById('userIcon').addEventListener('click', function(event) {
+            event.stopPropagation(); // Prevents the event from bubbling up to the document
+            var menu = document.getElementById('menu');
+            menu.classList.toggle('show');
+        });
+
+        document.addEventListener('click', function(event) {
+            var menu = document.getElementById('menu');
+            var userIcon = document.getElementById('userIcon');
+            if (!userIcon.contains(event.target)) {
+                menu.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>

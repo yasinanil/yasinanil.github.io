@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Testing Portal</title>
+    <link rel="icon" href="pc_icon.ico" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e1e2f, #2e3b55);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 3rem;
+            text-shadow: 2px 2px 5px #000;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 30px;
+            padding: 40px;
+            perspective: 1000px;
+        }
+
+        .card {
+            background: #3c4b6b;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transform-style: preserve-3d;
+            transform: rotateY(0deg);
+            transition: transform 0.5s ease, background 0.3s ease;
+        }
+
+        .card:hover {
+            transform: rotateY(10deg) scale(1.05);
+            background: #526d98;
+        }
+
+        .card a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 1.1rem;
+            display: block;
+            margin-top: 10px;
+            transition: color 0.2s;
+        }
+
+        .card i {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: #00ffd0;
+        }
+
+        .card a:hover {
+            color: #00ffd0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.95rem;
+            background-color: #1a1a2e;
+            margin-top: 40px;
+        }
+
+        footer a {
+            color: #00ffd0;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>QA Testing Playground</h1>
+    <div class="container">
+        <div class="card"><i class="fas fa-mouse-pointer"></i><a href="actionsClickDrag.html">Actions</a>
+        </div>
+        <div class="card"><i class="fas fa-star"></i><a href="addDeleteStar.html">Add/Delete Star</a></div>
+        <div class="card"><i class="fas fa-table"></i><a href="addRecordWebTable.html">Add Record Web Table</a></div>
+        <div class="card"><i class="fas fa-check-square"></i><a href="checkbox-radioButton.html">Checkbox/Radio Button</a></div>
+        <div class="card"><i class="fas fa-cookie"></i><a href="Cookies.html">Cookies</a></div>
+        <div class="card"><i class="fas fa-clock"></i><a href="CookiesWait.html">Cookies Wait</a></div>
+        <div class="card"><i class="fas fa-eraser"></i><a href="deleteChars.html">Delete Chars</a></div>
+        <div class="card"><i class="fas fa-eye-slash"></i><a href="displayNone.html">Display None</a></div>
+        <div class="card"><i class="fas fa-download"></i><a href="downloadUpload.html">Download/Upload</a></div>
+        <div class="card"><i class="fas fa-hand-paper"></i><a href="dragAndDrop.html">Drag and Drop</a></div>
+        <div class="card"><i class="fas fa-paint-brush"></i><a href="Draw.html">Draw</a></div>
+        <div class="card"><i class="fas fa-caret-down"></i><a href="Dropdowns.html">Dropdowns</a></div>
+        <div class="card"><i class="fas fa-search"></i><a href="findBy.html">Find By</a></div>
+        <div class="card"><i class="fas fa-file-alt"></i><a href="form.html">Form</a></div>
+        <div class="card"><i class="fas fa-home"></i><a href="homepage.html">Homepage</a></div>
+        <div class="card"><i class="fas fa-window-maximize"></i><a href="iframe.html">Iframe</a></div>
+        <div class="card"><i class="fas fa-pen"></i><a href="ActionsForm.html">JS Alert Form</a></div>
+        <div class="card"><i class="fas fa-paper-plane"></i><a href="submit-button.html">New Tab</a></div>
+        <div class="card"><i class="fas fa-arrow-right"></i><a href="pagination.html">Pagination</a></div>
+        <div class="card"><i class="fas fa-user-plus"></i><a href="Registration.html">Registration</a></div>
+        <div class="card"><i class="fas fa-user"></i><a href="signIn.html">Sign In</a></div>
+        <div class="card"><i class="fas fa-hourglass-half"></i><a href="Wait.html">Wait</a></div>
+        <div class="card"><i class="fas fa-table-list"></i><a href="webTable.html">Web Table</a></div>
+    </div>
+
+    <footer>
+        &copy; Yasin Anıl |
+        <a href="https://www.linkedin.com/in/yasinanil" target="_blank">LinkedIn</a> |
+        <a href="https://github.com/yasinanil" target="_blank">GitHub</a>
+    </footer>
+
+</body>
+
+</html>

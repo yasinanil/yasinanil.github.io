@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Push Button with Stars</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+      overflow: hidden; /* Prevent scrollbars due to star positioning */
+    }
+
+    .button-container {
+      display: flex;
+      gap: 10px;
+    }
+
+    .circle-button, .delete-button {
+      padding: 15px;
+      border-radius: 50%;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .circle-button {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .delete-button {
+      background-color: #f44336;
+      color: white;
+      border-radius: 10%;
+    }
+
+    .circle-button:hover, .delete-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .stars-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden; /* Prevent stars from moving out of the viewport */
+    }
+
+    .star {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background-color: gold;
+      clip-path: polygon(
+        50% 0%, 
+        61% 35%, 
+        98% 35%, 
+        68% 57%, 
+        79% 91%, 
+        50% 70%, 
+        21% 91%, 
+        32% 57%, 
+        2% 35%, 
+        39% 35%
+      );
+      transform: perspective(400px) rotateX(20deg) rotateY(20deg);
+      transition: transform 0.5s ease, top 0.5s ease, left 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+  <div class="button-container">
+    <button id="push-button" class="circle-button">Star</button>
+    <button id="delete-button" class="delete-button">Delete</button>
+  </div>
+  <div id="stars-container" class="stars-container"></div>
+
+  <script>
+    // Get references to buttons and the stars container
+    const pushButton = document.getElementById('push-button');
+    const deleteButton = document.getElementById('delete-button');
+    const starsContainer = document.getElementById('stars-container');
+
+    // Array to keep track of the stars
+    const stars = [];
+
+    // Event listener for the push button
+    pushButton.addEventListener('click', () => {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      
+      // Set initial position (top-left corner)
+      star.style.top = '0';
+      star.style.left = '0';
+      
+      starsContainer.appendChild(star);
+      stars.push(star); // Add the star to the array
+      
+      // Animate star to random position
+      setTimeout(() => {
+        const randomX = Math.random() * (window.innerWidth - 40) + 'px';
+        const randomY = Math.random() * (window.innerHeight - 40) + 'px';
+        star.style.left = randomX;
+        star.style.top = randomY;
+      }, 10); // Small delay to ensure initial position is set
+    });
+
+    // Event listener for the delete button to remove the most recent star
+    deleteButton.addEventListener('click', () => {
+      if (stars.length > 0) {
+        const lastStar = stars.pop(); // Get the last star from the array
+        starsContainer.removeChild(lastStar); // Remove it from the DOM
+      }
+    });
+  </script>
+</body>
+</html>

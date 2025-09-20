@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3-Column Web Table with Add Record</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        table {
+            width: 60%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        caption {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px;
+        }
+
+        .form-container {
+            margin: 20px auto;
+            width: 60%;
+        }
+
+        .form-container input, .form-container select, .form-container button {
+            padding: 10px;
+            margin: 5px;
+            font-size: 16px;
+        }
+
+        .form-container input[type="text"] {
+            width: 30%;
+        }
+
+        .form-container input[type="number"] {
+            width: 10%;
+        }
+
+        .form-container select {
+            width: 30%;
+        }
+
+        .form-container button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #45a049;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between; /* Space out buttons evenly */
+            align-items: center; /* Center buttons vertically */
+            margin: 0; /* Remove margin for action buttons */
+            padding: 0; /* Remove padding for action buttons */
+            width: 100%; /* Make the action buttons take full width */
+        }
+
+        .action-buttons button {
+            flex: 1; /* Allow buttons to take equal space */
+            margin: 0 10px; /* Add margin for spacing */
+            padding: 5px 10px; /* Adjust padding as needed */
+        }
+
+        .edit-button {
+            background-color: #2196F3; /* Blue */
+            color: white;
+        }
+
+        .edit-button:hover {
+            background-color: #1976D2; /* Darker Blue */
+        }
+
+        .delete-button {
+            background-color: #f44336; /* Red */
+            color: white;
+        }
+
+        .delete-button:hover {
+            background-color: #d32f2f; /* Darker Red */
+        }
+
+        .action-buttons button:hover {
+            opacity: 0.9; /* Slightly dim the button on hover */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <input type="text" id="nameInput" placeholder="Name" />
+        <input type="number" id="ageInput" placeholder="Age" />
+        <select id="countrySelect">
+            <option value="">Select Country</option>
+            <option value="USA">USA</option>
+            <option value="UK">UK</option>
+            <option value="Canada">Canada</option>
+            <option value="Australia">Australia</option>
+            <option value="Germany">Germany</option>
+            <!-- Add more countries as needed -->
+        </select>
+        <button onclick="addRecord()">Add Record</button>
+    </div>
+
+    <table>
+        <caption>People Information</caption>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Country</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+    </table>
+
+    <script>
+        const allNames = ['John Doe', 'Jane Smith', 'Alex Johnson', 'Emily Davis', 'Michael Brown', 'Sarah Wilson', 'David Lee', 'Laura Miller'];
+        let availableNames = [...allNames]; // Copy of all names for unique selection
+        let usedNames = new Set(); // To track used names in the table
+        let editingName = null; // Variable to store the name of the record being edited
+
+        function getRandomUniqueName() {
+            if (availableNames.length === 0) {
+                alert('No more unique names available.');
+                return '';
+            }
+            const randomIndex = Math.floor(Math.random() * availableNames.length);
+            return availableNames.splice(randomIndex, 1)[0];
+        }
+
+        function populateTable() {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = ''; // Clear existing rows
+            usedNames = new Set(); // Clear used names
+
+            // Load existing records from localStorage
+            const savedRecords = JSON.parse(localStorage.getItem('records')) || [];
+
+            // Populate table with saved records
+            savedRecords.forEach(record => {
+                addRowToTable(record.name, record.age, record.country);
+            });
+
+            // Add default rows with unique names
+            for (let i = 0; i < 3; i++) {
+                const name = getRandomUniqueName();
+                if (!name) break; // Stop if no unique names are available
+                const age = Math.floor(Math.random() * (60 - 18 + 1)) + 18; // Random age between 18 and 60
+                const country = ['USA', 'UK', 'Canada', 'Australia', 'Germany'][Math.floor(Math.random() * 5)];
+                addRowToTable(name, age, country);
+            }
+        }
+
+        function addRowToTable(name, age, country) {
+            const tableBody = document.getElementById('tableBody');
+            const newRow = document.createElement('tr');
+
+            // Create and append cells to the new row
+            const nameCell = document.createElement('td');
+            nameCell.textContent = name;
+            newRow.appendChild(nameCell);
+
+            const ageCell = document.createElement('td');
+            ageCell.textContent = age;
+            newRow.appendChild(ageCell);
+
+            const countryCell = document.createElement('td');
+            countryCell.textContent = country;
+            newRow.appendChild(countryCell);
+
+            // Create action buttons
+            const actionCell = document.createElement('td');
+            actionCell.className = 'action-buttons';
+            const editButton = document.createElement('button');
+            editButton.textContent = 'Edit';
+            editButton.className = 'edit-button';
+            editButton.onclick = () => editRecord(name, age, country);
+            actionCell.appendChild(editButton);
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.className = 'delete-button';
+            deleteButton.onclick = () => deleteRecord(name);
+            actionCell.appendChild(deleteButton);
+
+            newRow.appendChild(actionCell);
+
+            // Append the new row to the table body
+            tableBody.appendChild(newRow);
+            usedNames.add(name);
+        }
+
+        function addRecord() {
+            // Get the input values
+            const name = document.getElementById('nameInput').value;
+            const age = document.getElementById('ageInput').value;
+            const country = document.getElementById('countrySelect').value;
+
+            // Validate input
+            if (name === '' || age === '' || country === '') {
+                alert('Please fill out all fields.');
+                return;
+            }
+
+            // Check for duplicate names
+            if (editingName) {
+                // If editing, update the record
+                updateRecord(editingName, name, age, country);
+            } else {
+                // If adding new, check for duplicates
+                if (usedNames.has(name)) {
+                    alert('This name already exists in the table.');
+                    return;
+                }
+
+                // Add the new record to the table
+                addRowToTable(name, age, country);
+                usedNames.add(name);
+
+                // Save the new record in localStorage
+                saveRecord(name, age, country);
+            }
+
+            // Clear input fields
+            clearInputFields();
+        }
+
+        function clearInputFields() {
+            document.getElementById('nameInput').value = '';
+            document.getElementById('ageInput').value = '';
+            document.getElementById('countrySelect').value = '';
+            editingName = null; // Reset editing name
+        }
+
+        function saveRecord(name, age, country) {
+            // Retrieve existing records from localStorage
+            const savedRecords = JSON.parse(localStorage.getItem('records')) || [];
+            // Add the new record
+            savedRecords.push({ name, age, country });
+            // Save the updated records back to localStorage
+            localStorage.setItem('records', JSON.stringify(savedRecords));
+        }
+
+        function updateRecord(oldName, name, age, country) {
+            const tableBody = document.getElementById('tableBody');
+            const rows = tableBody.getElementsByTagName('tr');
+
+            for (let row of rows) {
+                const cells = row.getElementsByTagName('td');
+                if (cells[0].textContent === oldName) {
+                    cells[0].textContent = name;
+                    cells[1].textContent = age;
+                    cells[2].textContent = country;
+
+                    // Update the record in localStorage
+                    const savedRecords = JSON.parse(localStorage.getItem('records')) || [];
+                    const recordIndex = savedRecords.findIndex(record => record.name === oldName);
+                    if (recordIndex !== -1) {
+                        savedRecords[recordIndex] = { name, age, country };
+                        localStorage.setItem('records', JSON.stringify(savedRecords));
+                    }
+
+                    editingName = null; // Reset editing name
+                    clearInputFields();
+                    return;
+                }
+            }
+        }
+
+        function editRecord(name, age, country) {
+            document.getElementById('nameInput').value = name;
+            document.getElementById('ageInput').value = age;
+            document.getElementById('countrySelect').value = country;
+            editingName = name; // Store the name of the record being edited
+        }
+
+        function deleteRecord(name) {
+            const tableBody = document.getElementById('tableBody');
+            const rows = tableBody.getElementsByTagName('tr');
+
+            for (let row of rows) {
+                const cells = row.getElementsByTagName('td');
+                if (cells[0].textContent === name) {
+                    tableBody.removeChild(row);
+
+                    // Remove the record from localStorage
+                    let savedRecords = JSON.parse(localStorage.getItem('records')) || [];
+                    savedRecords = savedRecords.filter(record => record.name !== name);
+                    localStorage.setItem('records', JSON.stringify(savedRecords));
+                    usedNames.delete(name); // Remove from used names
+                    return;
+                }
+            }
+        }
+
+        // Populate table on initial load
+        window.onload = populateTable;
+    </script>
+</body>
+</html>

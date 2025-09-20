@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Car Brand Dropdowns</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 40px;
+    }
+    .section {
+      margin-bottom: 50px;
+    }
+    select, input {
+      padding: 10px;
+      font-size: 16px;
+      width: 300px;
+    }
+    .dropdown-box, .suggestions, .custom-list {
+      border: 1px solid #ccc;
+      width: 300px;
+      background: #fff;
+    }
+    .custom-dropdown, .suggestion-item {
+      padding: 10px;
+      cursor: pointer;
+    }
+    .custom-dropdown:hover, .suggestion-item:hover {
+      background-color: #eee;
+    }
+    .custom-list {
+      display: none;
+      position: absolute;
+      z-index: 1;
+    }
+    .suggestions {
+      display: none;
+      max-height: 150px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Car Brand Dropdown Practice Page</h1>
+
+  <!-- 1. Traditional Dropdown -->
+  <div class="section">
+    <h2>1. Traditional Dropdown</h2>
+    <label for="carSelect">Choose a car brand:</label><br/>
+    <select id="carSelect">
+      <option value="">--Select a brand--</option>
+      <option value="Toyota">Toyota</option>
+      <option value="BMW">BMW</option>
+      <option value="Tesla">Tesla</option>
+      <option value="Ford">Ford</option>
+      <option value="Mercedes">Mercedes</option>
+    </select>
+  </div>
+
+  <!-- 2. Multi-Select Dropdown -->
+  <div class="section">
+    <h2>2. Multi-Select Dropdown</h2>
+    <label for="multiCarSelect">Select multiple car brands:</label><br/>
+    <select id="multiCarSelect" multiple size="5">
+      <option value="Toyota">Toyota</option>
+      <option value="BMW">BMW</option>
+      <option value="Tesla">Tesla</option>
+      <option value="Ford">Ford</option>
+      <option value="Mercedes">Mercedes</option>
+    </select>
+  </div>
+
+  <!-- 3. Custom Dropdown -->
+  <div class="section">
+    <h2>3. Custom Dropdown (Bootstrap-like)</h2>
+    <div id="customDropdown" class="dropdown-box custom-dropdown">Select a car brand</div>
+    <div id="customList" class="custom-list">
+      <div class="custom-dropdown">Toyota</div>
+      <div class="custom-dropdown">BMW</div>
+      <div class="custom-dropdown">Tesla</div>
+      <div class="custom-dropdown">Ford</div>
+      <div class="custom-dropdown">Mercedes</div>
+    </div>
+  </div>
+
+  <!-- 4. Static Auto-Suggest -->
+  <div class="section">
+    <h2>4. Static Auto-Suggest Dropdown</h2>
+    <input type="text" id="staticInput" placeholder="Type e.g. Tes or Mer" />
+    <div id="staticSuggestions" class="suggestions">
+      <div class="suggestion-item">Tesla Model S</div>
+      <div class="suggestion-item">Tesla Model 3</div>
+      <div class="suggestion-item">Tesla Roadster</div>
+      <div class="suggestion-item">Mercedes C-Class</div>
+      <div class="suggestion-item">Mercedes GLE</div>
+    </div>
+  </div>
+
+  <!-- 5. Dynamic Auto-Suggest -->
+  <div class="section">
+    <h2>5. Dynamic Auto-Suggest Dropdown</h2>
+    <input type="text" id="dynamicInput" placeholder="Search car brand..." />
+    <div id="dynamicSuggestions" class="suggestions"></div>
+  </div>
+
+  <script>
+    // Custom Dropdown
+    const customDropdown = document.getElementById('customDropdown');
+    const customList = document.getElementById('customList');
+
+    customDropdown.addEventListener('click', () => {
+      customList.style.display = customList.style.display === 'block' ? 'none' : 'block';
+    });
+
+    document.querySelectorAll('#customList .custom-dropdown').forEach(item => {
+      item.addEventListener('click', () => {
+        customDropdown.textContent = item.textContent;
+        customList.style.display = 'none';
+      });
+    });
+
+    // Static Auto-Suggest (Filtered)
+    const staticInput = document.getElementById('staticInput');
+    const staticSuggestions = document.getElementById('staticSuggestions');
+    const allStaticItems = Array.from(staticSuggestions.children);
+
+    staticInput.addEventListener('input', () => {
+      const value = staticInput.value.toLowerCase();
+      staticSuggestions.innerHTML = '';
+
+      if (value.length > 1) {
+        const filtered = allStaticItems.filter(item =>
+          item.textContent.toLowerCase().includes(value)
+        );
+
+        filtered.forEach(item => staticSuggestions.appendChild(item));
+        staticSuggestions.style.display = filtered.length ? 'block' : 'none';
+      } else {
+        staticSuggestions.style.display = 'none';
+      }
+    });
+
+    staticSuggestions.addEventListener('click', (e) => {
+      if (e.target.classList.contains('suggestion-item')) {
+        staticInput.value = e.target.textContent;
+        staticSuggestions.style.display = 'none';
+      }
+    });
+
+    // Dynamic Auto-Suggest
+    const dynamicInput = document.getElementById('dynamicInput');
+    const dynamicSuggestions = document.getElementById('dynamicSuggestions');
+    const carBrands = ['Toyota', 'Tesla', 'BMW', 'Bugatti', 'Bentley', 'Ford', 'Ferrari', 'Fiat', 'Mazda', 'Mercedes'];
+
+    dynamicInput.addEventListener('input', () => {
+      const keyword = dynamicInput.value.toLowerCase();
+      dynamicSuggestions.innerHTML = '';
+      if (keyword.length > 1) {
+        const filtered = carBrands.filter(brand => brand.toLowerCase().includes(keyword));
+        filtered.forEach(brand => {
+          const div = document.createElement('div');
+          div.className = 'suggestion-item';
+          div.textContent = brand;
+          div.addEventListener('click', () => {
+            dynamicInput.value = brand;
+            dynamicSuggestions.innerHTML = '';
+            dynamicSuggestions.style.display = 'none';
+          });
+          dynamicSuggestions.appendChild(div);
+        });
+        dynamicSuggestions.style.display = filtered.length ? 'block' : 'none';
+      } else {
+        dynamicSuggestions.style.display = 'none';
+      }
+    });
+  </script>
+
+</body>
+</html>

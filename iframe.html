@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Styled iFrame Example</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #f8f9fa, #e9ecef);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    p {
+      color: #555;
+      margin-bottom: 20px;
+      text-align: center;
+      max-width: 600px;
+    }
+
+    .iframe-container {
+      width: 80%;
+      max-width: 600px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+      transform: perspective(1000px) rotateX(1deg);
+    }
+
+    iframe {
+      width: 100%;
+      height: 200px;
+      border: none;
+      display: block;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(145deg, #007bff, #339dff);
+      color: white;
+      box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+      transition: all 0.2s ease-in-out;
+    }
+
+    button:hover {
+      background: linear-gradient(145deg, #0069d9, #2c8dfb);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <h2>iFrame Example</h2>
+  <p>This example includes a centered and visually styled iFrame for testing input interactions.</p>
+
+  <div class="iframe-container">
+    <iframe id="mce_0_ifr" srcdoc='
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              padding: 20px;
+              background-color: #f4f4f4;
+            }
+            input {
+              width: 100%;
+              padding: 10px;
+              font-size: 16px;
+              border: 1px solid #ccc;
+              border-radius: 6px;
+              box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            }
+          </style>
+        </head>
+        <body>
+          <input type="text" placeholder="Type here..." />
+        </body>
+      </html>'>
+    </iframe>
+  </div>
+
+  <button aria-label="Bold" onclick="alert('Bold button clicked')">Bold</button>
+
+</body>
+</html>

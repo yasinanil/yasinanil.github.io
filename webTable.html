@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two Web Tables with 3D Effect</title>
+    <style>
+        /* Style for both tables to add a 3D effect */
+        table {
+            width: 50%;
+            margin: auto;
+            border-collapse: collapse;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3); /* 3D shadow effect */
+            border-radius: 10px; /* Rounded corners */
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        /* Add a gradient background for a 3D look */
+        th {
+            background: linear-gradient(to bottom, #e0e0e0, #b3b3b3);
+            color: black;
+        }
+
+        /* Table rows with slight shading */
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        /* Hover effect to enhance 3D feel */
+        tr:hover {
+            background-color: #e6f7ff;
+            transform: scale(1.01);
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Add subtle 3D effect to table cells */
+        td {
+            box-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- First Table -->
+    <h2 style="text-align:center;">Table 1: Student Grades</h2>
+    <table id="t1">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Subject</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Alice</td><td>Math</td><td>A</td></tr>
+            <tr><td>Bob</td><td>Science</td><td>B+</td></tr>
+            <tr><td>Charlie</td><td>History</td><td>A-</td></tr>
+            <tr><td>Diana</td><td>English</td><td>B</td></tr>
+            <tr><td>Eve</td><td>Math</td><td>A+</td></tr>
+            <tr><td>Frank</td><td>Science</td><td>B</td></tr>
+            <tr><td>Grace</td><td>History</td><td>A</td></tr>
+        </tbody>
+    </table>
+
+    <!-- Second Table -->
+    <h2 style="text-align:center; margin-top:40px;">Table 2: Product List</h2>
+    <table id="t2">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Category</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Laptop</td><td>Electronics</td><td>$1000</td></tr>
+            <tr><td>Chair</td><td>Furniture</td><td>$150</td></tr>
+            <tr><td>Book</td><td>Stationery</td><td>$20</td></tr>
+            <tr><td>Phone</td><td>Electronics</td><td>$800</td></tr>
+            <tr><td>Table</td><td>Furniture</td><td>$200</td></tr>
+            <tr><td>Notebook</td><td>Stationery</td><td>$5</td></tr>
+            <tr><td>Headphones</td><td>Electronics</td><td>$100</td></tr>
+        </tbody>
+    </table>
+</body>
+</html>

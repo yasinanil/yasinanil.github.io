@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkboxes and Radio Buttons</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            text-align: left;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 300px;
+            /* Adjust width as needed */
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        label {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        input[type="checkbox"],
+        input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            position: relative;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+
+        input[type="radio"] {
+            border-radius: 50%;
+        }
+
+        h3 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        h5 {
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h3 style="color: rgb(64, 15, 239);">Checkbox Inputs</h3>
+        <h5>Select your favorite fruits:</h5>
+
+        <div class="form-group">
+            <input type="checkbox" id="apple" name="apple" value="Apple">
+            <label for="apple">Apple</label>
+        </div>
+
+        <div class="form-group">
+            <input type="checkbox" id="orange" name="orange" value="Orange">
+            <label for="orange">Orange</label>
+        </div>
+
+        <div class="form-group">
+            <input type="checkbox" id="banana" name="banana" value="Banana">
+            <label for="banana">Banana</label>
+        </div>
+
+        <div class="form-group">
+            <input type="checkbox" id="peach" name="peach" value="Peach">
+            <label for="peach">Peach</label>
+        </div>
+        <h3>Favorite Sports</h3>
+        <h5>Select your favorite sports:</h5>
+
+        <div class="form-group">
+            <input type="checkbox" id="football" name="sports" value="Football">
+            <label for="football">Football</label>
+        </div>
+
+        <div class="form-group">
+            <input type="checkbox" id="basketball" name="sports" value="Basketball">
+            <label for="basketball">Basketball</label>
+        </div>
+
+        <div class="form-group">
+            <input type="checkbox" id="tennis" name="sports" value="Tennis">
+            <label for="tennis">Tennis</label>
+        </div>
+
+        <div class="form-group">
+            <input type="checkbox" id="swimming" name="sports" value="Swimming">
+            <label for="swimming">Swimming</label>
+        </div>
+
+
+        <h3 style="color: rgb(64, 15, 239);">Radio Button Inputs</h3>
+        <h5>Select your gender:</h5>
+
+        <div class="form-group">
+            <input type="radio" id="genderMale" name="gender" value="Male">
+            <label for="genderMale">Male</label>
+        </div>
+
+        <div class="form-group">
+            <input type="radio" id="genderFemale" name="gender" value="Female">
+            <label for="genderFemale">Female</label>
+        </div>
+
+
+        <h3>Blood Group</h3>
+        <h5>Select your blood group:</h5>
+
+        <div class="form-group">
+            <input type="radio" id="bloodA" name="bloodGroup" value="A">
+            <label for="bloodA">A</label>
+        </div>
+
+        <div class="form-group">
+            <input type="radio" id="bloodB" name="bloodGroup" value="B">
+            <label for="bloodB">B</label>
+        </div>
+
+        <div class="form-group">
+            <input type="radio" id="bloodAB" name="bloodGroup" value="AB">
+            <label for="bloodAB">AB</label>
+        </div>
+
+        <div class="form-group">
+            <input type="radio" id="bloodO" name="bloodGroup" value="O">
+            <label for="bloodO">O</label>
+        </div>
+    </div>
+
+</body>
+
+</html>

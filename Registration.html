@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Registration</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form {
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: left;
+    }
+
+    .form h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    select {
+      width: calc(100% - 12px);
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    select:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+
+    .password-strength {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .strength-label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .submit-btn {
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background-color: #2980b9;
+    }
+
+    .gender-options {
+      display: flex;
+      justify-content: space-between;
+      width: 60%;
+      margin: 0 auto;
+    }
+
+    .gender-options input[type="radio"] {
+      display: none;
+    }
+
+    .gender-options label {
+      position: relative;
+      padding-left: 30px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .gender-options label:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 2px;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #3498db;
+      border-radius: 50%;
+      background-color: #fff;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    .gender-options input[type="radio"]:checked+label:before {
+      background-color: #3498db;
+      border-color: #3498db;
+    }
+
+   
+    .form-group.side-by-side {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .form-group.side-by-side .input-field {
+      width: 48%;
+    }
+  </style>
+</head>
+<body>
+  <form id="registrationForm" class="form">
+    <h1>User Registration</h1>
+    <div class="form-group">
+      <label for="ssn">SSN:</label>
+      <input type="text" id="ssn" required pattern="\d{3}-\d{2}-\d{4}" placeholder="123-45-6789">
+    </div>
+    
+    <div class="form-group">
+      <label for="firstName">First Name:</label>
+      <input type="text" id="firstName" required pattern="[A-Za-z]+" title="Only letters allowed" placeholder="Enter your first name">
+    </div>
+    <div class="form-group">
+      <label for="lastName">Last Name:</label>
+      <input type="text" id="lastName" required pattern="[A-Za-z]+" title="Only letters allowed" placeholder="Enter your last name">
+    </div>
+    
+    <div class="form-group">
+      <label>Gender:</label>
+      <div class="gender-options">
+        <input type="radio" id="male" name="gender" value="male">
+        <label for="male">Male</label>
+        <input type="radio" id="female" name="gender" value="female">
+        <label for="female">Female</label>
+        <input type="radio" id="other" name="gender" value="other">
+        <label for="other">Other</label>
+      </div>
+    </div>
+    <div class="form-group side-by-side">
+      <div class="input-field">
+        <label for="job">Job:</label>
+        <select id="job" required>
+          <option value="">Select a job</option>
+          <option value="developer">Developer</option>
+          <option value="tester">Tester</option>
+          <option value="designer">Designer</option>
+          <option value="manager">Manager</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="input-field">
+        <label for="cv">CV (PDF only):</label>
+        <input type="file" id="cv" name="cv" accept=".pdf" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="username">Username:</label>
+      <input type="text" id="username" required placeholder="Choose a username">
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" required placeholder="example@example.com">
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" id="password" required minlength="8" placeholder="Enter your password">
+    </div>
+    <div class="password-strength">
+      <span class="strength-label">Password Strength:</span>
+      <progress id="passwordStrength" value="0" max="4"></progress>
+    </div>
+    <button type="submit" class="submit-btn">Register</button>
+  </form>
+
+  <script>
+    const passwordInput = document.getElementById('password');
+    const passwordStrength = document.getElementById('passwordStrength');
+    const cvInput = document.getElementById('cv');
+    const form = document.getElementById('registrationForm');
+  
+    passwordInput.addEventListener('input', function () {
+      const password = passwordInput.value;
+      let strength = 0;
+  
+      if (password.length >= 8) {
+        strength++;
+      }
+  
+      if (password.match(/[A-Z]/)) {
+        strength++;
+      }
+  
+      if (password.match(/[a-z]/)) {
+        strength++;
+      }
+  
+      if (password.match(/\d/)) {
+        strength++;
+      }
+  
+      passwordStrength.value = strength;
+    });
+  
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+  
+      const allowedExtensions = /(\.pdf)$/i;
+      const cvFile = cvInput.files[0];
+  
+      if (!allowedExtensions.exec(cvFile.name)) {
+        alert('Please select a PDF file for CV.');
+        return;
+      }
+  
+      const password = passwordInput.value;
+  
+      if (password.length < 8 || !password.match(/[A-Z]/) || !password.match(/[a-z]/) || !password.match(/\d/)) {
+        alert('Password must contain at least 8 characters including at least one uppercase letter, one lowercase letter, and one digit.');
+        return;
+      }
+  
+      alert('Form submitted!');
+    });
+  </script>
+  
+
+</body>
+</html>

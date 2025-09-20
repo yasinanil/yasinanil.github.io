@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 400px;
+            padding: 30px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #333;
+        }
+
+        input {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #218838;
+        }
+
+        .success-message {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f55aea;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .login-button {
+            margin-top: 10px;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <h1>User Registration</h1>
+    <form id="registrationForm">
+        <label for="ssn">Enter SSN</label>
+        <input type="text" id="ssn" name="ssn" required>
+
+        <label for="first-name">Enter First Name</label>
+        <input type="text" id="first-name" name="first-name" required>
+
+        <label for="last-name">Enter Last Name</label>
+        <input type="text" id="last-name" name="last-name" required>
+
+        <label for="address">Enter Address</label>
+        <input type="text" id="address" name="address" required>
+
+        <label for="phone">Enter Phone Number</label>
+        <input type="tel" id="phone" name="phone" required>
+
+        <label for="username">Enter Username</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="email">Enter Email</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Enter New Password</label>
+        <input type="password" id="password" name="password" required>
+
+        <label for="confirm-password">Enter New Password Confirmation</label>
+        <input type="password" id="confirm-password" name="confirm-password" required>
+
+        <button type="submit" class="button">Register</button>
+    </form>
+
+    <div class="success-message" id="successMessage">
+        User registered successfully!
+        <button class="login-button" onclick="window.location.href='login.html';">Log In</button>
+    </div>
+</div>
+
+<script>
+    document.getElementById('registrationForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+
+        localStorage.setItem('username', username);
+        localStorage.setItem('password', password);
+
+        document.getElementById('successMessage').style.display = 'block';
+
+        var duration = 3 * 1000;
+        var animationEnd = Date.now() + duration;
+        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+        function randomInRange(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        var interval = setInterval(function() {
+            var timeLeft = animationEnd - Date.now();
+
+            if (timeLeft <= 0) {
+                return clearInterval(interval);
+            }
+
+            var particleCount = 50 * (timeLeft / duration);
+            confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+            confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+        }, 250);
+    });
+</script>
+
+</body>
+</html>

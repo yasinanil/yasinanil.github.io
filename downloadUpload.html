@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag and Drop File Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        .button-container {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .download-btn,
+        .upload-btn,
+        .submit-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            font-size: 18px;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px rgba(0, 0, 0, 0.3), 0 6px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .download-btn {
+            background-color: #4CAF50;
+        }
+
+        .download-btn:active {
+            transform: translateY(4px);
+        }
+
+        .upload-btn {
+            background-color: #2196F3;
+        }
+
+        .upload-btn:active {
+            transform: translateY(4px);
+        }
+
+        .submit-btn {
+            background-color: #FF5722;
+        }
+
+        .submit-btn:active {
+            transform: translateY(4px);
+        }
+
+        .upload-input {
+            display: none;
+        }
+
+        .alert-box,
+        .success-box {
+            display: none;
+            padding: 20px;
+            color: white;
+            font-size: 18px;
+            text-align: center;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.5s ease;
+        }
+
+        .alert-box {
+            background-color: #FF5722;
+        }
+
+        .success-box {
+            background-color: #4CAF50;
+        }
+
+        .alert-box.show,
+        .success-box.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .drop-zone {
+            border: 3px dashed #bbb;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            color: #aaa;
+            margin: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .drop-zone.dragover {
+            background-color: #e3f2fd;
+            border-color: #2196F3;
+            color: #2196F3;
+        }
+    </style>
+</head>
+<body>
+
+    <form id="uploadForm">
+        <!-- New hidden input field -->
+        <input type="hidden" name="shadowDomNote" value="Some modern web components use Shadow DOM which hides parts of the DOM from regular queries.">
+
+        <div class="button-container">
+            <a href="QAProgram.png" download class="download-btn">Download</a>
+        </div>
+
+        <div class="button-container">
+            <label class="upload-btn">
+                Upload
+                <input type="file" id="uploadInput" class="upload-input" accept=".pdf">
+            </label>
+        </div>
+
+        <div class="button-container">
+            <label class="upload-btn">
+                Upload Multiple PDFs
+                <input type="file" id="multiUploadInput" class="upload-input" accept=".pdf" multiple>
+            </label>
+        </div>
+
+        <div class="drop-zone" id="dropZone">
+            Drag and drop PDF files here
+        </div>
+
+        <!-- Informational paragraph about Shadow DOM -->
+        <p style="max-width: 600px; text-align: center; color: #555; font-size: 16px; margin: 10px 20px;">
+            <em>Note:</em> Some modern web components are built using <strong>Shadow DOM</strong>, which hides parts of the DOM from regular queries.
+        </p>
+
+        <div class="button-container">
+            <button type="submit" class="submit-btn">Submit</button>
+        </div>
+    </form>
+
+    <div class="alert-box" id="alertBox">
+        Please upload at least one PDF file. Only PDF files are allowed!
+    </div>
+
+    <div class="success-box" id="successBox">
+        Files uploaded successfully!
+    </div>
+
+    <script>
+        const form = document.getElementById('uploadForm');
+        const uploadInput = document.getElementById('uploadInput');
+        const multiUploadInput = document.getElementById('multiUploadInput');
+        const alertBox = document.getElementById('alertBox');
+        const successBox = document.getElementById('successBox');
+        const dropZone = document.getElementById('dropZone');
+
+        dropZone.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', function(e) {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', function(e) {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+
+            const files = Array.from(e.dataTransfer.files).filter(file => file.type === 'application/pdf');
+
+            if (files.length > 1) {
+                multiUploadInput.files = createFileList(files);
+            } else if (files.length === 1) {
+                uploadInput.files = createFileList(files);
+            }
+        });
+
+        function createFileList(files) {
+            const dataTransfer = new DataTransfer();
+            files.forEach(file => dataTransfer.items.add(file));
+            return dataTransfer.files;
+        }
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const singleFile = uploadInput.files[0];
+            const multipleFiles = multiUploadInput.files;
+
+            const hasSingleFile = !!singleFile;
+            const hasMultipleFiles = multipleFiles.length > 0;
+
+            const isSinglePDF = hasSingleFile && singleFile.type === "application/pdf";
+            const areMultiplePDFs = hasMultipleFiles &&
+                Array.from(multipleFiles).every(file => file.type === "application/pdf");
+
+            if ((!hasSingleFile && !hasMultipleFiles) || (hasSingleFile && !isSinglePDF) || (hasMultipleFiles && !areMultiplePDFs)) {
+                alertBox.classList.add('show');
+                setTimeout(() => alertBox.classList.remove('show'), 3000);
+            } else {
+                successBox.classList.add('show');
+                setTimeout(() => {
+                    successBox.classList.remove('show');
+                    form.submit();
+                }, 3000);
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Colorful Buttons with Success Message</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        /* Base button styles */
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border-radius: 10px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            outline: none;
+        }
+
+        /* Button hover effect */
+        button:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Button active state (click effect) */
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Button specific styles */
+        #button1 {
+            background-color: #ff6347;
+            color: white;
+        }
+
+        .btn {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        #button3 {
+            background-color: #008cba;
+            color: white;
+        }
+
+        /* Success message styling */
+        .success-message {
+            font-size: 16px;
+            color: #28a745;
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="button1" onclick="showSuccessMessage('msg1')">Button 1 (ID)</button>
+    <div id="msg1" class="success-message">Success: Button 1 clicked!</div>
+    <br><br>
+
+    <button id="button2" class="btn" onclick="showSuccessMessage('msg2')">Button 2 (ID & Class)</button>
+    <div id="msg2" class="success-message">Success: Button 2 clicked!</div>
+    <br><br>
+
+    <button id="button3" class="btn" name="btn3" onclick="showSuccessMessage('msg3')">Button 3 (ID, Class & Name)</button>
+    <div id="msg3" class="success-message">Success: Button 3 clicked!</div>
+
+    <script>
+        function showSuccessMessage(elementId) {
+            var messageDiv = document.getElementById(elementId);
+            messageDiv.style.display = 'block'; // Show the success message
+        }
+    </script>
+
+</body>
+</html>

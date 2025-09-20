@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Sign-In Page with Eye Icon Inside Input</title>
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background: #f0f0f0;
+        }
+
+        /* Styling for the sign-in form */
+        .login-container {
+            width: 300px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+            perspective: 1000px;
+            transform: rotateY(20deg);
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            transform: rotateY(10deg);
+            display: inline-block;
+        }
+
+        .hint {
+            display: inline-block;
+            cursor: pointer;
+            font-size: 18px;
+            margin-left: 5px;
+            color: blue;
+            vertical-align: middle;
+            transform: rotateY(10deg);
+        }
+
+        .hint:hover {
+            text-decoration: underline;
+        }
+
+        .hint-text {
+            display: none;
+            font-size: 12px;
+            color: #333;
+            margin-top: 5px;
+        }
+
+        /* Styling for input fields */
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transform: rotateY(10deg);
+            position: relative;
+        }
+
+        /* Eye icon styling inside the input */
+        .password-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-container input[type="password"] {
+            padding-right: 40px; /* Add padding for the icon */
+        }
+
+        .eye-icon {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #888;
+        }
+
+        .login-container input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transform: rotateY(10deg);
+        }
+
+        .login-container input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        /* Header and Table styling */
+        #employeeHeader {
+            display: none;
+            font-size: 24px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .employee-table {
+            display: none;
+            border-collapse: collapse;
+            width: 80%;
+            max-width: 800px;
+            transform: rotateX(10deg);
+        }
+
+        .employee-table th, .employee-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .employee-table th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container" id="loginForm">
+        <div style="text-align: center;">
+            <h2>Sign In</h2>
+            <span class="hint" onclick="showHint()">&#x3f;</span>
+        </div>
+        <form onsubmit="return validateLogin()">
+            <input type="text" id="username" placeholder="Username" required>
+            
+            <!-- Password field with eye icon inside -->
+            <div class="password-container">
+                <input type="password" id="password" placeholder="Password" required>
+                <span class="eye-icon" onclick="togglePasswordVisibility()">&#x1F441;</span>
+            </div>
+
+            <input type="submit" value="Sign In">
+            <div class="hint-text" id="hintText">Username: admin, Password: 123</div>
+        </form>
+    </div>
+
+    <!-- Employee Table Header -->
+    <h1 id="employeeHeader">Employee Table</h1>
+
+    <!-- Employee Table -->
+    <table class="employee-table" id="employeeTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>1</td><td>John Doe</td><td>HR</td><td>john@example.com</td><td>123-456-7890</td></tr>
+            <tr><td>2</td><td>Jane Smith</td><td>Finance</td><td>jane@example.com</td><td>987-654-3210</td></tr>
+            <tr><td>3</td><td>Emily Davis</td><td>IT</td><td>emily@example.com</td><td>456-789-0123</td></tr>
+            <tr><td>4</td><td>Michael Brown</td><td>Marketing</td><td>michael@example.com</td><td>789-012-3456</td></tr>
+            <tr><td>5</td><td>Linda Wilson</td><td>Sales</td><td>linda@example.com</td><td>654-321-0987</td></tr>
+            <tr><td>6</td><td>James Taylor</td><td>Engineering</td><td>james@example.com</td><td>321-654-0987</td></tr>
+            <tr><td>7</td><td>Robert Johnson</td><td>Support</td><td>robert@example.com</td><td>123-789-4560</td></tr>
+            <tr><td>8</td><td>Patricia Martinez</td><td>Admin</td><td>patricia@example.com</td><td>789-456-1230</td></tr>
+            <tr><td>9</td><td>David Garcia</td><td>Research</td><td>david@example.com</td><td>098-765-4321</td></tr>
+            <tr><td>10</td><td>Susan Lee</td><td>HR</td><td>susan@example.com</td><td>654-789-3210</td></tr>
+        </tbody>
+    </table>
+
+    <script>
+        function validateLogin() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            if (username === "admin" && password === "123") {
+                document.getElementById("loginForm").style.display = "none";
+                document.getElementById("employeeHeader").style.display = "block";
+                document.getElementById("employeeTable").style.display = "table";
+                return false;
+            } else {
+                alert("Incorrect username or password");
+                return false;
+            }
+        }
+
+        function showHint() {
+            var hintText = document.getElementById("hintText");
+            if (hintText.style.display === "none" || hintText.style.display === "") {
+                hintText.style.display = "block";
+            } else {
+                hintText.style.display = "none";
+            }
+        }
+
+        function togglePasswordVisibility() {
+            var passwordField = document.getElementById("password");
+            var eyeIcon = document.querySelector(".eye-icon");
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                eyeIcon.textContent = "🙈"; // Change icon to closed eye
+            } else {
+                passwordField.type = "password";
+                eyeIcon.textContent = "👁"; // Change icon back to open eye
+            }
+        }
+    </script>
+</body>
+</html>

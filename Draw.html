@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mouse Drawing with Reset</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            font-family: Arial, sans-serif;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        canvas {
+            border: 2px solid #000;
+            background-color: #fff;
+            cursor: crosshair;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2); /* 3D effect on canvas */
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3); /* 3D effect on button */
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-3px); /* Lift button on hover */
+            box-shadow: 5px 5px 12px rgba(0, 0, 0, 0.5); /* Stronger shadow on hover */
+        }
+
+        button:active {
+            transform: translateY(0); /* Return button to normal on click */
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3); /* Return shadow to normal on click */
+        }
+    </style>
+</head>
+<body>
+
+<h1>Draw something here</h1> <!-- Header added -->
+
+<canvas id="myCanvas" width="500" height="500"></canvas>
+<button id="resetButton">Reset</button>
+
+<script>
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+
+    // Start drawing
+    function startDrawing(e) {
+        drawing = true;
+        draw(e);
+    }
+
+    // Stop drawing
+    function stopDrawing() {
+        drawing = false;
+        ctx.beginPath(); // Reset the drawing path
+    }
+
+    // Drawing function
+    function draw(e) {
+        if (!drawing) return;
+
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = '#000'; // Drawing color
+
+        ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
+    }
+
+    // Reset the canvas
+    function resetCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+    }
+
+    // Event listeners for drawing
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mousemove', draw);
+
+    // Event listener for the reset button
+    document.getElementById('resetButton').addEventListener('click', resetCanvas);
+</script>
+
+</body>
+</html>

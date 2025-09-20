@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actions Class</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        form {
+            width: 350px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transform: perspective(1000px) rotateX(10deg);
+            transition: transform 0.5s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        form:hover {
+            transform: perspective(1000px) rotateX(0deg);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .input-group {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group, .radio-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        input[type="checkbox"], input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        iframe {
+            border: none;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <form id="myForm" target="iframeSubmit" onsubmit="openNewWindow()">
+        <div class="input-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="input-group">
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+        </div>
+
+        <label for="options">Choose a department:</label>
+        <select id="options" name="options">
+            <option value="hr">Human Resources</option>
+            <option value="it">IT Department</option>
+            <option value="finance">Finance</option>
+            <option value="marketing">Marketing</option>
+        </select>
+
+        <label>Choose your interests:</label>
+        <div class="checkbox-group">
+            <label><input type="checkbox" name="pref" value="coding"> Coding</label>
+            <label><input type="checkbox" name="pref" value="design"> Design</label>
+            <label><input type="checkbox" name="pref" value="management"> Management</label>
+        </div>
+
+        <label>Select your gender:</label>
+        <div class="radio-group">
+            <label><input type="radio" name="gender" value="male"> Male</label>
+            <label><input type="radio" name="gender" value="female"> Female</label>
+            <label><input type="radio" name="gender" value="other"> Other</label>
+        </div>
+
+        <label>Click for Passcode:</label>
+        <button type="button" onclick="generatePasscode()">Generate Passcode</button>
+
+        <iframe name="iframeSubmit" src="submit-button.html"></iframe>
+    </form>
+
+    <script>
+        function generatePasscode() {
+            var passcode = Math.floor(1000 + Math.random() * 9000); // Generate a 4-digit random passcode
+            alert("Your passcode is: " + passcode);
+            var enteredPasscode = prompt("Please enter the passcode:");
+
+            if (enteredPasscode == passcode) {
+                document.querySelector("iframe").style.display = "block";
+            } else {
+                alert("Incorrect passcode. Try again.");
+            }
+        }
+
+        function openNewWindow() {
+            window.open("https://www.example.com", "_blank");
+        }
+    </script>
+
+</body>
+</html>
